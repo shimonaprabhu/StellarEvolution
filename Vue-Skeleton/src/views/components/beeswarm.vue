@@ -24,9 +24,9 @@ export default {
   },
   methods: {
     drawBeeChart(localData, id) {
-      const margin = { top: 40, right: 10, bottom: 120, left: 200 };
-      const height = 500;
-      const width = 960;
+      const margin = { top: 40, right: 100, bottom: 120, left: 200 };
+      const height = 600;
+      const width = 1000;
       d3.csv(localData).then(function (data) {
         const svg = d3
           .select(id)
@@ -36,16 +36,35 @@ export default {
           .append("g")
           .attr("transform", `translate(${margin.left},${margin.top})`);
 
-        const x = d3
+        const xTop = d3
           .scaleBand()
           .domain(["O", "B", "A", "F", "G", "K", "M"])
-
           .range([0, width]);
 
         svg
           .append("g")
+          .attr("transform", `translate(0)`)
+          .call(d3.axisTop(xTop).ticks(5));
+        svg
+          .append("text")
+          .attr(
+            "transform",
+            "translate(" + width / 2 + " ," + (height + 40) + ")"
+          )
+          .attr("y", -650)
+          .style("text-anchor", "middle")
+          .style("font-weight", "bold")
+          .text("Spectral Class");
+
+        const xBottom = d3
+          .scaleLinear()
+          .domain(d3.extent(data.map((d) => +d.Temperature)))
+          .range([width, 0]);
+
+        svg
+          .append("g")
           .attr("transform", `translate(0, ${height})`)
-          .call(d3.axisBottom(x).ticks(5));
+          .call(d3.axisBottom(xBottom).ticks(5));
         svg
           .append("text")
           .attr(
@@ -54,26 +73,46 @@ export default {
           )
           .style("text-anchor", "middle")
           .style("font-weight", "bold")
-          .text("Spectral Class");
-        const y = d3
+          .text("Temperature (K)");
+
+        const yLeft = d3
           .scaleLog()
           .domain(d3.extent(data.map((d) => +d.Luminosity)))
           .range([height, 0]);
-        svg.append("g").call(d3.axisLeft(y));
+        svg.append("g").call(d3.axisLeft(yLeft));
         svg
           .append("text")
           .attr("transform", "rotate(-90)")
-          .attr("y", 0 - 50)
+          .attr("y", -50)
           .attr("x", 0 - height / 2)
           .attr("dy", "1em")
           .style("text-anchor", "middle")
           .style("font-weight", "bold")
           .text("Luminosity (L/L0)");
 
+        const yRight = d3
+          .scaleLinear()
+          .domain(d3.extent(data.map((d) => +d.Magnitude)))
+          .range([height, 0]);
+
+        svg
+          .append("g")
+          .attr("transform", "translate(" + width + " ,0)")
+          .call(d3.axisRight(yRight));
+        svg
+          .append("text")
+          .attr("transform", "rotate(-90)")
+          .attr("y", 1020)
+          .attr("x", 0 - height / 2)
+          .attr("dy", "1em")
+          .style("text-anchor", "middle")
+          .style("font-weight", "bold")
+          .text("Absolute Magnitude (M)");
+
         const color = d3.scaleOrdinal().range(d3.schemePaired);
 
         const starMass = d3.extent(data.map((d) => +d["Radius"]));
-        const size = d3.scaleSqrt().domain(starMass).range([3, 40]);
+        const size = d3.scaleSqrt().domain(starMass).range([3, 30]);
 
         svg
           .selectAll(".circle")
@@ -84,8 +123,9 @@ export default {
           .attr("stroke", "black")
           .attr("fill", (d) => color(d.Type))
           .attr("r", (d) => size(+d["Radius"]))
-          .attr("cx", (d) => x(d.Class))
-          .attr("cy", (d) => y(d.Luminosity));
+        //   .attr("r", (d) => 5)
+          .attr("cx", (d) => xBottom(+d.Temperature))
+          .attr("cy", (d) => yLeft(+d.Luminosity));
       });
     },
   },
