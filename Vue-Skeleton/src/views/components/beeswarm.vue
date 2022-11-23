@@ -36,7 +36,7 @@ export default {
           .append("g")
           .attr("transform", `translate(${margin.left},${margin.top})`);
 
-        let x = d3
+        const x = d3
           .scaleBand()
           .domain(["O", "B", "A", "F", "G", "K", "M"])
 
@@ -55,10 +55,10 @@ export default {
           .style("text-anchor", "middle")
           .style("font-weight", "bold")
           .text("Spectral Class");
-        let y = d3
+        const y = d3
           .scaleLog()
           .domain(d3.extent(data.map((d) => +d.Luminosity)))
-          .range([height, margin[0]]);
+          .range([height, 0]);
         svg.append("g").call(d3.axisLeft(y));
         svg
           .append("text")
@@ -70,10 +70,10 @@ export default {
           .style("font-weight", "bold")
           .text("Luminosity (L/L0)");
 
-        let color = d3.scaleOrdinal().range(d3.schemePaired);
+        const color = d3.scaleOrdinal().range(d3.schemePaired);
 
-        let starMass = d3.extent(data.map((d) => +d["Radius"]));
-        let size = d3.scaleSqrt().domain(starMass).range([3, 40]);
+        const starMass = d3.extent(data.map((d) => +d["Radius"]));
+        const size = d3.scaleSqrt().domain(starMass).range([3, 40]);
 
         svg
           .selectAll(".circle")
