@@ -1,4 +1,5 @@
 <template>
+  <button type="button" class="metric">Add Metric</button>
   <div id="bee"></div>
 </template>
 
@@ -51,7 +52,7 @@ export default {
             "transform",
             "translate(" + width / 2 + " ," + (height + 40) + ")"
           )
-          .attr("y", -650)
+          .attr("y", -670)
           .style("text-anchor", "middle")
           .style("font-weight", "bold")
           .text("Spectral Class");
@@ -75,34 +76,34 @@ export default {
           .style("font-weight", "bold")
           .text("Temperature (K)");
 
-        const yLeft = d3
+        const yRight = d3
           .scaleLog()
           .domain(d3.extent(data.map((d) => +d.Luminosity)))
           .range([height, 0]);
-        svg.append("g").call(d3.axisLeft(yLeft));
+        svg.append("g").call(d3.axisRight(yRight));
         svg
           .append("text")
           .attr("transform", "rotate(-90)")
-          .attr("y", -50)
+          .attr("y", 1020)
           .attr("x", 0 - height / 2)
           .attr("dy", "1em")
           .style("text-anchor", "middle")
           .style("font-weight", "bold")
           .text("Luminosity (L/L0)");
 
-        const yRight = d3
+        const yLeft = d3
           .scaleLinear()
           .domain(d3.extent(data.map((d) => +d.Magnitude)))
-          .range([height, 0]);
+          .range([0, height]);
 
         svg
           .append("g")
           .attr("transform", "translate(" + width + " ,0)")
-          .call(d3.axisRight(yRight));
+          .call(d3.axisLeft(yLeft));
         svg
           .append("text")
           .attr("transform", "rotate(-90)")
-          .attr("y", 1020)
+          .attr("y", -50)
           .attr("x", 0 - height / 2)
           .attr("dy", "1em")
           .style("text-anchor", "middle")
@@ -123,9 +124,9 @@ export default {
           .attr("stroke", "black")
           .attr("fill", (d) => color(d.Type))
           .attr("r", (d) => size(+d["Radius"]))
-        //   .attr("r", (d) => 5)
+          //   .attr("r", (d) => 5)
           .attr("cx", (d) => xBottom(+d.Temperature))
-          .attr("cy", (d) => yLeft(+d.Luminosity));
+          .attr("cy", (d) => yLeft(+d.Magnitude));
       });
     },
   },
