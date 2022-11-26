@@ -34,6 +34,7 @@ var fixedProjection = d3.geoStereographic()
 var canvas = d3.select("body").append("canvas")
     .attr("width", width)
     .attr("height", height)
+    .classed("canvas", true)
 
 var c = canvas.node().getContext("2d")
 
@@ -156,7 +157,7 @@ var bgRGB = d3.rgb('#113')
         geoConstellations.push(geoConstellation)
     })
 
-    draw(geoConstellations, [30, -70])
+    draw(geoConstellations, [60, -70])
 
     var raStart, decStart
     function getStart() {
@@ -181,6 +182,8 @@ var bgRGB = d3.rgb('#113')
         .on("start", getStart)
         .on("drag", move)
     canvas.call(drag)
+
+    
 
 function makeRadialGradient(x, y, r, color) {
     var radialgradient = c.createRadialGradient(x, y, 0, x, y, r)
@@ -234,21 +237,39 @@ function draw(constellations, center) {
                 c.beginPath(), path(geo),c.stroke()
             } else if (geo.type == 'MultiLineString') {
                 c.strokeStyle = (constellation.properties.zodiac)? '#f2f237':"#999"
+
                 c.beginPath(), path(geo), c.stroke();
+                
+                
             }
         })
+
     })
+    // c.strokeStyle = "#f00"
+    // c.lineWidth = 1.2
+    // constellations[min].geometry.geometries.forEach(function(geo) {
+    //     if (geo.type == 'LineString') {
+    //         c.beginPath(), path(geo), c.stroke()
+    //     }
+    // })
+
     c.strokeStyle = "#f00"
-    c.lineWidth = 1.2
+    c.lineWidth = 5.0
+    d3.select('.canvas').on('click', function(event, d){
+    
     constellations[min].geometry.geometries.forEach(function(geo) {
-        if (geo.type == 'LineString') {
-            c.beginPath(), path(geo), c.stroke()
+        if (geo.type == 'MultiLineString'){
+        c.beginPath(), path(geo), c.stroke()
         }
+        
     })
+    });
+    
+
     c.fillStyle = '#fff'
     c.textAlign = "center"
     c.font = "18px sans-serif"
-    c.fillText(constellations[min].properties.name, width / 2, 280)
+    c.fillText(constellations[min].properties.name, width / 2, 300)
 }
             },
         }
