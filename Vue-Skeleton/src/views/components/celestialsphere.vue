@@ -1,4 +1,5 @@
 <template>
+
   <div id="sphere"></div>
 </template>
 
@@ -25,8 +26,9 @@ export default {
   },
   methods: {
     drawSphereChart(localData, id) {
-      const height = 1000;
-      const width = height;
+      const margin = { top: 80, right: 100, bottom: 120, left: 250 };
+      const height = "600px";
+      const width = "1000px";
       const padding = 10;
       const sensitivity = 75;
       const starlist = [
@@ -146,10 +148,10 @@ export default {
         .select(id)
         .append("svg")
         .attr("width", width)
-        .attr("height", height);
+        .attr("height", height)
+        .attr("transform", `translate(${margin.left},${margin.top})`);
 
       const projection = d3["geoOrthographic"]().precision(0.1);
-
       const initialScale = projection.scale();
 
       const magnitudeScale = d3
@@ -169,38 +171,56 @@ export default {
         .append("div")
         .style("opacity", 0)
         .attr("class", "tooltip")
-        .style("color", "white")
-        .style("font-size", "28px")
+        .style("color", "rgb(153, 247, 247)")
+        .style("font-size", "20px")
         .style("background-color", "#113")
         .style("padding", "5px")
         .style("position", "absolute")
-        .style("cursor", "pointer");
+        .style("cursor", "pointer")
+        .style("font-style", "italic");
 
       const tooltip_constellation = d3
         .select(id)
         .append("div")
         .style("opacity", 0)
         .attr("class", "tooltip")
-        .style("color", "white")
-        .style("font-size", "28px")
+        .style("color", "rgb(220,208,255)")
+        .style("font-size", "20px")
         .style("background-color", "#113")
         .style("padding", "5px")
         .style("position", "absolute")
-        .style("cursor", "pointer");
+        .style("cursor", "pointer")
+        .style("font-style", "italic");
 
       const starFuture = d3
         .select(id)
         .append("div")
+        .style("color", "gray")
         .style("opacity", 0)
         .attr("class", "tooltip")
-        .style("color", "white")
-        .style("font-size", "28px")
-        .style("background-color", "#113")
-        .style("border", "solid")
-        .style("border-width", "0.1px")
-        .style("border-radius", "5px")
+        .style("font-size", "20px")
+        .style("background-color", "rgb(0, 0, 0)")
         .style("padding", "10px")
-        .style("position", "absolute");
+        .style("padding-top", "120px")
+        .style("height", "100%")
+        .style("width", "180px")
+        .style("position", "absolute")
+        .style("left", 0 + "px")
+        .style("top", 800 + "px");
+      
+      const sidenav = d3
+        .select(id)
+        .append("div")
+        .attr("class", "sidenav")
+        .style("color", "gray")
+        .style("font-size", "20px")
+        .style("background-color", "rgb(0, 0, 0)")
+        .style("padding", "10px")
+        .style("height", "100%")
+        .style("width", "180px")
+        .style("position", "absolute")
+        .style("left", "0px")
+        .style("top", "800px");
 
       // Tooltip
       const mouseover_stars = function (event, d) {
@@ -214,9 +234,9 @@ export default {
       const mousemove_stars = function (event, d) {
         if (starNames[d.id].name) {
           tooltip_stars
-            .html(`Name: ${starNames[d.id].name}`)
-            .style("left", 1000 + "px")
-            .style("top", 1000 + "px");
+            .html(`${starNames[d.id].name}`)
+            .style("left", 810 + "px")
+            .style("top", 1190 + "px");
         }
       };
       const mousemove_constellation = function (event, d) {
@@ -224,10 +244,10 @@ export default {
           if (constellations.features[i].id == d.id) {
             tooltip_constellation
               .html(
-                `Constellation: ${constellations.features[i].properties.name}`
+                `${constellations.features[i].properties.name}`
               )
-              .style("left", 1000 + "px")
-              .style("top", 1100 + "px");
+              .style("left", 810 + "px")
+              .style("top", 1190 + "px");
           }
         }
       };
@@ -249,6 +269,7 @@ export default {
         .attr("fill", "#113")
         .attr("stroke", "#ddd")
         .attr("stroke-width", "0.5px")
+        .attr("transform", `translate(100,50)`)
         .on("mouseover", mouseover_constellation)
         .on("mousemove", mousemove_constellation)
         .on("mouseleave", mouseleave_constellation);
@@ -295,20 +316,28 @@ export default {
         .on("mouseover", mouseover_stars)
         .on("mousemove", mousemove_stars)
         .on("mouseleave", mouseleave_stars)
+        .attr("transform", `translate(100,50)`)
         .on("click", function (event, d) {
           if (starlist.includes(starNames[d.id].name)) {
             // console.log(d);
+            sidenav.style("opacity", 0);
             starFuture.style("opacity", 1);
             starFuture
-              .html(`Name: ${starNames[d.id.name]}`)
-              .html(`Current Age: ${starObj[starNames[d.id].name].age}`)
-              .html(`Magnitude: ${d.properties.mag}`)
-              .html(`B-V Color Index: ${d.properties.bv}`)
-              .html(`Current Stage: ${starObj[starNames[d.id].name].current}`)
-              .html(`Predicted Future: ${starObj[starNames[d.id].name].future}`)
-              .style("left", 900 + "px")
-              .style("top", 900 + "px");
-          } else starFuture.style("opacity", 0);
+              .html(`Name: ${starNames[d.id].name} <br/><br/> Current Age: ${starObj[starNames[d.id].name].age} <br/><br/> Magnitude: ${d.properties.mag} <br/><br/> B-V Color Index: ${d.properties.bv} <br/><br/> Current Stage: ${starObj[starNames[d.id].name].current} <br/><br/>  Predicted Future: ${starObj[starNames[d.id].name].future}`)
+              
+          } 
+          else if (starNames[d.id].name)
+          {
+            sidenav.style("opacity", 0);
+            starFuture.style("opacity", 1);
+            starFuture
+              .html(`Name: ${starNames[d.id].name}`)
+              
+          }
+          else{
+            sidenav.style("opacity", 1);
+            starFuture.style("opacity", 0);
+          }
         });
 
       svg
@@ -342,4 +371,15 @@ export default {
 </script>
 
 <style>
+.sidenav-sky {
+  height: 100%;
+  width: 180px;
+  /* position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 0; */
+  background-color: #111;
+  /* overflow-x: hidden;
+  padding-top: 20px; */
+}
 </style>
