@@ -276,6 +276,20 @@ export default {
             "rgb(247, 133, 2)",
             "rgb(247, 26, 2)",
           ]);
+
+        const glow_tooltip = d3
+        .select(id)
+        .append("div")
+        .style("opacity", 1)
+        .attr("class", "tooltip")
+        .style("color", "rgb(220,208,255)")
+        .style("font-size", "20px")
+        .style("background-color", "#113")
+        .style("padding", "5px")
+        .style("position", "absolute")
+        .style("cursor", "pointer")
+        .style("font-style", "italic");
+
         const starMass = d3.extent(data.map((d) => +d["Radius"]));
         const size = d3.scaleSqrt().domain(starMass).range([3, 30]);
 
@@ -338,6 +352,18 @@ export default {
               if (flag) return size(+d["Radius"]);
               else return 2;
             })
+            // .style("filter","url(#glow)")
+            .style("filter", function (d) {
+              if ((d["Glow"])!="N")
+              return "url(#glow)";
+            })
+            .on("click", function (event, d) {
+            if ((d["Glow"])!="N") {
+              console.log("Glow");
+              glow_tooltip.html(`Name`)
+                
+            } 
+          })
             .on("mouseover", mouseover)
             .on("mousemove", mousemove)
             .on("mouseleave", mouseleave)
@@ -352,61 +378,76 @@ export default {
               else return yRight(+d["Luminosity"]);
             });
 
-          const brush = d3.brush().on("start brush end", brushed);
+          var filter = svg.append("defs").append("filter").attr("id", "glow"),
+          feGaussianBlur = filter
+            .append("feGaussianBlur")
+            .attr("stdDeviation", "5")
+            .attr("result", "coloredBlur"),
+          feMerge = filter.append("feMerge"),
+          feMergeNode_1 = feMerge
+            .append("feMergeNode")
+            .attr("in", "coloredBlur"),
+          feMergeNode_2 = feMerge
+            .append("feMergeNode")
+            .attr("in", "SourceGraphic");
 
-          svg.call(brush);
 
-          function brushed(event) {
-            console.log("brushed");
-            let value = [];
-            if (event.selection) {
-              const [[x0, y0], [x1, y1]] = event.selection;
+          // const brush = d3.brush().on("start brush end", brushed);
 
-              value = dots
-                .style("fill", "white")
-                .filter(function (d) {
-                  if (xaxis == "Temperature" && yaxis == "Magnitude") {
-                    x0 <= xBottom(d.Temperature) &&
-                      xBottom(d.Temperature) < x1 &&
-                      y0 <= yLeft(d.Magnitude) &&
-                      yLeft(d.Magnitude) < y1;
-                  }
-                  // console.log(x0, y0, x1, y1);
-                  // console.log(
-                  //   "X",
-                  //   xBottom(d.Temperature) && xBottom(d.Temperature),
-                  //   "Y",
-                  //   yLeft(d.Magnitude) && yLeft(d.Magnitude)
-                  // );
-                })
-                .style("fill", "grey")
-                .data();
-              //   .filter(function (d) {
-              //   // if (xaxis == "Class" && yaxis == "Magnitude") {
-              //   //   return (d => x0 <= xTop(d.Class) && xTop(d.Class) < x1 && y0 <= yLeft(d.Magnitude) && yLeft(d.Magnitude) < y1);
+          // svg.call(brush);
 
-              //   // }
-              //   // else if (xaxis == "Class" && yaxis == "Luminosity"){
-              //   //   console.log('2');
-              //   //   return (d => x0 <= xTop(d.Class) && xTop(d.Class) < x1 && y0 <= yRight(d.Luminosity) && yRight(d.Luminosity) < y1);
+          
+          // function brushed(event) {
+          //   console.log("brushed");
+          //   let value = [];
+          //   if (event.selection) {
+          //     const [[x0, y0], [x1, y1]] = event.selection;
 
-              //   // }
-              //    if (xaxis == "Temperature" && yaxis == "Magnitude"){
-              //     console.log(xBottom(d.Temperature))
-              //     return (d => x0 <= xBottom(d.Temperature) && xBottom(d.Temperature) < x1 && y0 <= yLeft(d.Magnitude) && yLeft(d.Magnitude) < y1);
+          //     value = dots
+          //       .style("fill", "white")
+          //       .filter(function (d) {
+          //         if (xaxis == "Temperature" && yaxis == "Magnitude") {
+          //           x0 <= xBottom(d.Temperature) &&
+          //             xBottom(d.Temperature) < x1 &&
+          //             y0 <= yLeft(d.Magnitude) &&
+          //             yLeft(d.Magnitude) < y1;
+          //         }
+          //         // console.log(x0, y0, x1, y1);
+          //         // console.log(
+          //         //   "X",
+          //         //   xBottom(d.Temperature) && xBottom(d.Temperature),
+          //         //   "Y",
+          //         //   yLeft(d.Magnitude) && yLeft(d.Magnitude)
+          //         // );
+          //       })
+          //       .style("fill", "grey")
+          //       .data();
+          //     //   .filter(function (d) {
+          //     //   // if (xaxis == "Class" && yaxis == "Magnitude") {
+          //     //   //   return (d => x0 <= xTop(d.Class) && xTop(d.Class) < x1 && y0 <= yLeft(d.Magnitude) && yLeft(d.Magnitude) < y1);
 
-              //   }
-              //   // else if (xaxis == "Temperature" && yaxis == "Luminosity"){
-              //   //   console.log('4');
-              //   //   return (d => x0 <= xBottom(d.Temperature) && xBottom(d.Temperature) < x1 && y0 <= yRight(d.Luminosity) && yRight(d.Luminosity) < y1);
+          //     //   // }
+          //     //   // else if (xaxis == "Class" && yaxis == "Luminosity"){
+          //     //   //   console.log('2');
+          //     //   //   return (d => x0 <= xTop(d.Class) && xTop(d.Class) < x1 && y0 <= yRight(d.Luminosity) && yRight(d.Luminosity) < y1);
 
-              //   // }
-              // })
-            } else {
-              dots.style("fill", "white");
-            }
-            svg.property("value", value).dispatch("input");
-          }
+          //     //   // }
+          //     //    if (xaxis == "Temperature" && yaxis == "Magnitude"){
+          //     //     console.log(xBottom(d.Temperature))
+          //     //     return (d => x0 <= xBottom(d.Temperature) && xBottom(d.Temperature) < x1 && y0 <= yLeft(d.Magnitude) && yLeft(d.Magnitude) < y1);
+
+          //     //   }
+          //     //   // else if (xaxis == "Temperature" && yaxis == "Luminosity"){
+          //     //   //   console.log('4');
+          //     //   //   return (d => x0 <= xBottom(d.Temperature) && xBottom(d.Temperature) < x1 && y0 <= yRight(d.Luminosity) && yRight(d.Luminosity) < y1);
+
+          //     //   // }
+          //     // })
+          //   } else {
+          //     dots.style("fill", "white");
+          //   }
+          //   svg.property("value", value).dispatch("input");
+          // }
         }
 
         function update_radius() {
@@ -712,7 +753,7 @@ input:checked + .slider:before {
 
 .color-scheme {
   display: none;
-  background-color: black;
+  background-color: #5a5a5a;
   border: none;
   padding-left: 8px;
 }
