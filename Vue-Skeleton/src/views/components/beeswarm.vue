@@ -1,70 +1,64 @@
 <template>
   <!-- <button type="button" class="metric">Add Metric</button> -->
   <div class="sidenav">
+    <button class="dropdown-btn">X-Axis</button>
 
-    <button class="dropdown-btn">X-Axis
-    </button>
+    <select class="xmetric">
+      <option value="Class" selected>Class</option>
+      <option value="Temperature">Temperature</option>
+    </select>
 
-      <select class="xmetric">
-        <option value="Class" selected>Class</option>
-        <option value="Temperature">Temperature</option>
-      </select>
+    <button class="dropdown-btn">Y-Axis</button>
 
-    <button class="dropdown-btn">Y-Axis 
-    </button>
+    <select class="ymetric">
+      <option value="Magnitude" selected>Magnitude</option>
+      <option value="Luminosity">Luminosity</option>
+    </select>
 
-      <select class="ymetric">
-        <option value="Magnitude" selected>Magnitude</option>
-        <option value="Luminosity">Luminosity</option>
-      </select>
-    
-    <button class="dropdown-btn">Color Scheme
-    </button>
+    <button class="dropdown-btn">Color Scheme</button>
 
-      <select class="color-scheme">
-        <!-- <option value="Magnitude" selected>Magnitude</option>
+    <select class="color-scheme">
+      <!-- <option value="Magnitude" selected>Magnitude</option>
         <option value="Luminosity">Luminosity</option> -->
-        <option value="Type">Type</option>
-        <option value="Class" selected>Class</option>
-      </select>
+      <option value="Type">Type</option>
+      <option value="Class" selected>Class</option>
+    </select>
 
-      <button class="dropdown-btn-radius">Radius
-        
-        <label style = "display: inline-block;" class="switch">
-          <input type="checkbox" />
-          <span class="slider round"></span>
-        </label>
-    </button>
-<div id = "color-class" style="display:none;">
-      <button class="dropdown-btn">Legend For Class
-    </button>
+    <button class="dropdown-btn-radius">
+      Radius
 
-    <ul>
-        <li style="color:rgb(94, 99, 247);">O</li>
-        <li style="color:rgb(26, 166, 236);">B</li>
-        <li style="color:rgb(144, 225, 239);">A</li>
-        <li style="color:rgb(255,255,255);">F</li>
-        <li style="color:rgb(245, 223, 56);">G</li>
-        <li style="color:rgb(247, 133, 2);">K</li>
-        <li style="color:rgb(247, 26, 2);">M</li>
+      <label style="display: inline-block" class="switch">
+        <input type="checkbox" />
+        <span class="slider round"></span>
+      </label>
+    </button>
+    <div id="color-class" style="display: none">
+      <button class="dropdown-btn">Legend For Class</button>
+
+      <ul>
+        <li style="color: rgb(94, 99, 247)">O</li>
+        <li style="color: rgb(26, 166, 236)">B</li>
+        <li style="color: rgb(144, 225, 239)">A</li>
+        <li style="color: rgb(255, 255, 255)">F</li>
+        <li style="color: rgb(245, 223, 56)">G</li>
+        <li style="color: rgb(247, 133, 2)">K</li>
+        <li style="color: rgb(247, 26, 2)">M</li>
       </ul>
-</div>
-<div id = "color-type" style="display:none;">
-      <button class="dropdown-btn">Legend For Type
-    </button>
-    <ul>
-        <li style="color:rgb(213,94,0);">0</li>
-        <li style="color:rgb(230,159,0);">1</li>
-        <li style="color:rgb(255,255,255);">2</li>
-        <li style="color:rgb(204,121,167);">3</li>
-        <li style="color:rgb(0,158,115);">4</li>
-        <li style="color:rgb(0,114,178);">5</li>
+    </div>
+    <div id="color-type" style="display: none">
+      <button class="dropdown-btn">Legend For Type</button>
+      <ul>
+        <li style="color: rgb(213, 94, 0)">Red Dwarf</li>
+        <li style="color: rgb(230, 159, 0)">Brown Dwarf</li>
+        <li style="color: rgb(255, 255, 255)">White Dwarf</li>
+        <li style="color: rgb(204, 121, 167)">Main Sequence</li>
+        <li style="color: rgb(0, 158, 115)">Giant</li>
+        <li style="color: rgb(0, 114, 178)">Supergiant</li>
       </ul>
-</div>
-    
-</div>
+    </div>
+  </div>
 
-<!-- 
+  <!-- 
 <div class="bee-dd">
     <div class="bee-xaxis">
       Choose X-Axis Parameter:
@@ -105,7 +99,7 @@
 import * as d3 from "d3";
 import testData from "../../assets/data/startypes.csv";
 
-import {transition} from 'd3-transition';
+import { transition } from "d3-transition";
 
 var xaxis = "Class";
 var yaxis = "Magnitude";
@@ -130,18 +124,16 @@ export default {
     }
   },
   methods: {
-    
     drawBeeChart(localData, id) {
       const margin = { top: 80, right: 100, bottom: 120, left: 250 };
       const height = 600;
       const width = 1000;
-      
 
       var dropdown = document.getElementsByClassName("dropdown-btn");
       var i;
 
       for (i = 0; i < dropdown.length; i++) {
-        dropdown[i].addEventListener("click", function() {
+        dropdown[i].addEventListener("click", function () {
           this.classList.toggle("active");
           var dropdownContent = this.nextElementSibling;
           if (dropdownContent.style.display === "block") {
@@ -152,14 +144,10 @@ export default {
         });
       }
       function getTransition() {
-          return transition()
-            .duration(750)
-        }
-      
-      
+        return transition().duration(750);
+      }
 
       d3.csv(localData).then(function (data) {
-        
         const svg = d3
           .select(id)
           .append("svg")
@@ -168,22 +156,23 @@ export default {
           .append("g")
           .attr("transform", `translate(${margin.left},${margin.top})`);
 
-        
-        var ci = ['-1.5', '-1.0', '-0.5', '0.0','0.5','1.0','1.5'];
+        var ci = ["-1.5", "-1.0", "-0.5", "0.0", "0.5", "1.0", "1.5"];
 
-        
-      
-      const xTop = d3
+        const xTop = d3
           .scaleBand()
           .domain(["O", "B", "A", "F", "G", "K", "M"])
-          
           .range([0, width]);
 
         svg
           .append("g")
           .attr("transform", `translate(0)`)
           .attr("class", "axisxtop")
-          .call(d3.axisTop(xTop).ticks(5).tickFormat((d,i) => ci[i]));
+          .call(
+            d3
+              .axisTop(xTop)
+              .ticks(5)
+              .tickFormat((d, i) => ci[i])
+          );
         svg
           .append("text")
           .attr(
@@ -254,41 +243,38 @@ export default {
           .attr("fill", "white")
           .attr("stroke", "white");
 
-        const color_type = d3
-          .scaleOrdinal()
-          .domain([0,1,2,3,4,5])
-          .range([
-            // "#FD150B",
-            // "#c7630c",
-            // "#fff",
-            // "#FBE426",
-            // "#04c963",
-            // "#04a5c9"
-            "rgb(213,94,0)",
-            "rgb(230,159,0)",
-            "rgb(255,255,255)",
-            "rgb(204,121,167)",
-            "rgb(0,158,115)",
-            "rgb(0,114,178)"
-           ]); 
+        const color_type = d3.scaleOrdinal().domain([0, 1, 2, 3, 4, 5]).range([
+          // "#FD150B",
+          // "#c7630c",
+          // "#fff",
+          // "#FBE426",
+          // "#04c963",
+          // "#04a5c9"
+          "rgb(213,94,0)",
+          "rgb(230,159,0)",
+          "rgb(255,255,255)",
+          "rgb(204,121,167)",
+          "rgb(0,158,115)",
+          "rgb(0,114,178)",
+        ]);
         const color_class = d3
           .scaleOrdinal()
-          .domain(["O","B","A","F","G","K","M"])
+          .domain(["O", "B", "A", "F", "G", "K", "M"])
           .range([
             // "#33A1B8",
-          //   "#F3F5E7",
-          //   "#FCFB8F",
-          //   "#FBE426",
-          //   "#FA7806",
-          //   "#FD150B",
-          //   "#FD150B"
-          "rgb(94, 99, 247)",
+            //   "#F3F5E7",
+            //   "#FCFB8F",
+            //   "#FBE426",
+            //   "#FA7806",
+            //   "#FD150B",
+            //   "#FD150B"
+            "rgb(94, 99, 247)",
             "rgb(26, 166, 236)",
             "rgb(144, 225, 239)",
             "rgb(255,255,255)",
             "rgb(245, 223, 56)",
             "rgb(247, 133, 2)",
-            "rgb(247, 26, 2)"
+            "rgb(247, 26, 2)",
           ]);
         const starMass = d3.extent(data.map((d) => +d["Radius"]));
         const size = d3.scaleSqrt().domain(starMass).range([3, 30]);
@@ -331,43 +317,20 @@ export default {
             tooltip.transition().duration(200).style("opacity", 0);
           };
 
-        // var brush = d3.brush().extent([[0, 0], [width, height]]).on("end", onBrushEnd);
-
-        // var clip = svg.append("defs").append("svg:clipPath")
-        //     .attr("id", "clip")
-        //     .append("svg:rect")
-        //     .attr("width", width )
-        //     .attr("height", height )
-        //     .attr("x", 0) 
-        //     .attr("y", 0); 
-
-          // const dots = svg.append("g")
-          //    .attr("id", "scatterplot")
-          //    .attr("clip-path", "url(#clip)")
-          //    .on('dblclick', onDblClicked);
-          
-          const dots = svg.selectAll(".circle")
+          const dots = svg
+            .selectAll(".circle")
             .data(data)
             .join("circle")
             .attr("fill", function (d) {
-              // if (color_scheme == "Temperature")
-              // return color(d.Temperature);
-              // else if (color_scheme == "Magnitude")
-              // return color(d.Magnitude);
-              // else if (color_scheme == "Luminosity")
-              // return color(d.Luminosity);
-              if (color_scheme == "Class"){
+              if (color_scheme == "Class") {
                 document.getElementById("color-class").style.display = "block";
                 document.getElementById("color-type").style.display = "none";
                 return color_class(d.Class);
-              }
-              
-              else{
+              } else {
                 document.getElementById("color-type").style.display = "block";
                 document.getElementById("color-class").style.display = "none";
                 return color_type(d.Type);
               }
-              
             })
             .attr("class", "circle")
             .attr("stroke", "black")
@@ -378,10 +341,10 @@ export default {
             .on("mouseover", mouseover)
             .on("mousemove", mousemove)
             .on("mouseleave", mouseleave)
-            // .transition()
-            // .duration(2000)
+            .transition()
+            .duration(2000)
             .attr("cx", function (d) {
-              if (xaxis == "Class") return xTop(d["Class"]);
+              if (xaxis == "Class") return xTop(d["Class"]) + 72;
               else return xBottom(+d["Temperature"]);
             })
             .attr("cy", function (d) {
@@ -389,197 +352,62 @@ export default {
               else return yRight(+d["Luminosity"]);
             });
 
-        // const brush = d3.brush()
-        // .on("start brush end", brushed);
+          const brush = d3.brush().on("start brush end", brushed);
 
-      const brush = d3.brush()
-      .on("start brush end", brushed);
-        
-        svg.call(brush);
+          svg.call(brush);
 
-        function brushed({selection}) {
-          console.log('brushed')
-          let value = [];
-          if (selection) {
-            const [[x0, y0], [x1, y1]] = selection;
-            
-             value = dots
-             .attr("fill", "white")
-              .filter(function (d) {
-              // if (xaxis == "Class" && yaxis == "Magnitude") {
-              //   return (d => x0 <= xTop(d.Class) && xTop(d.Class) < x1 && y0 <= yLeft(d.Magnitude) && yLeft(d.Magnitude) < y1);
+          function brushed(event) {
+            console.log("brushed");
+            let value = [];
+            if (event.selection) {
+              const [[x0, y0], [x1, y1]] = event.selection;
 
-              // }
-              // else if (xaxis == "Class" && yaxis == "Luminosity"){
-              //   console.log('2');
-              //   return (d => x0 <= xTop(d.Class) && xTop(d.Class) < x1 && y0 <= yRight(d.Luminosity) && yRight(d.Luminosity) < y1);
+              value = dots
+                .style("fill", "white")
+                .filter(function (d) {
+                  if (xaxis == "Temperature" && yaxis == "Magnitude") {
+                    x0 <= xBottom(d.Temperature) &&
+                      xBottom(d.Temperature) < x1 &&
+                      y0 <= yLeft(d.Magnitude) &&
+                      yLeft(d.Magnitude) < y1;
+                  }
+                  // console.log(x0, y0, x1, y1);
+                  // console.log(
+                  //   "X",
+                  //   xBottom(d.Temperature) && xBottom(d.Temperature),
+                  //   "Y",
+                  //   yLeft(d.Magnitude) && yLeft(d.Magnitude)
+                  // );
+                })
+                .style("fill", "grey")
+                .data();
+              //   .filter(function (d) {
+              //   // if (xaxis == "Class" && yaxis == "Magnitude") {
+              //   //   return (d => x0 <= xTop(d.Class) && xTop(d.Class) < x1 && y0 <= yLeft(d.Magnitude) && yLeft(d.Magnitude) < y1);
 
-              // }
-               if (xaxis == "Temperature" && yaxis == "Magnitude"){
-                console.log(xBottom(d.Temperature))
-                return (d => x0 <= xBottom(d.Temperature) && xBottom(d.Temperature) < x1 && y0 <= yLeft(d.Magnitude) && yLeft(d.Magnitude) < y1);
+              //   // }
+              //   // else if (xaxis == "Class" && yaxis == "Luminosity"){
+              //   //   console.log('2');
+              //   //   return (d => x0 <= xTop(d.Class) && xTop(d.Class) < x1 && y0 <= yRight(d.Luminosity) && yRight(d.Luminosity) < y1);
 
-              }
-              // else if (xaxis == "Temperature" && yaxis == "Luminosity"){
-              //   console.log('4');
-              //   return (d => x0 <= xBottom(d.Temperature) && xBottom(d.Temperature) < x1 && y0 <= yRight(d.Luminosity) && yRight(d.Luminosity) < y1);
+              //   // }
+              //    if (xaxis == "Temperature" && yaxis == "Magnitude"){
+              //     console.log(xBottom(d.Temperature))
+              //     return (d => x0 <= xBottom(d.Temperature) && xBottom(d.Temperature) < x1 && y0 <= yLeft(d.Magnitude) && yLeft(d.Magnitude) < y1);
 
-              // }
-            })
-            .attr("fill", "grey")
-              .data();
+              //   }
+              //   // else if (xaxis == "Temperature" && yaxis == "Luminosity"){
+              //   //   console.log('4');
+              //   //   return (d => x0 <= xBottom(d.Temperature) && xBottom(d.Temperature) < x1 && y0 <= yRight(d.Luminosity) && yRight(d.Luminosity) < y1);
+
+              //   // }
+              // })
+            } else {
+              dots.style("fill", "white");
+            }
+            svg.property("value", value).dispatch("input");
           }
-          
-          svg.property("value", value).dispatch("input");
         }
-
-        
-
-        // dots.append("g")
-        //     .attr("class", "brush")
-        //     .call(brush);
-
-        // function brushended(event) {
-
-        //     console.log('brushended');
-
-        //     var s = event.selection;
-        //     console.log(s);
-        //     if (!s) {
-        //       console.log('here');
-        //         if (!idleTimeout) return idleTimeout = setTimeout(idled, idleDelay);
-        //         xBottom.domain(d3.extent(data, function (d) { return d.xBottom; })).nice();
-        //         yLeft.domain(d3.extent(data, function (d) { return d.yLeft; })).nice();
-        //     } else {
-        //         console.log('there');
-        //         xBottom.domain([s[0][0], s[1][0]].map(xBottom.invert, xBottom));
-        //         yLeft.domain([s[1][1], s[0][1]].map(yLeft.invert, yLeft));
-        //         bee.select(".brush").call(brush.move, null);
-        //     }
-            
-        //     zoom();
-        // }
-
-        // function onBrushEnd(ev) {
-        //   console.log('onBrushEnd');
-        //   const s = ev.selection;
-        //   if (!!s) {
-        //     if (xaxis == "Class"){
-        //       xBottom.domain([s[0][0], s[1][0]].map(xBottom.invert, xBottom));
-        //     }
-        //     else {
-        //       xBottom.domain([s[0][0], s[1][0]].map(xBottom.invert, xBottom));
-        //     }
-        //     if (yaxis == "Magnitude") {
-        //         yLeft.domain([s[0][1], s[1][1]].map(yLeft.invert, yLeft));
-        //     }
-        //     else {
-        //       yRight.domain([s[0][1], s[1][1]].map(yRight.invert, yRight));
-        //       }
-        //     // xBottom.domain([s[0][0], s[1][0]].map(xBottom.invert, xBottom));
-        //     // yLeft.domain([s[0][1], s[1][1]].map(yLeft.invert, yLeft));
-        //     // dots.selectAll('.brush').call(ev.target.clear);
-        //     zoom();
-        //   }
-        // }
-
-        // function zoom() {
-        //   dots.transition().duration(750);
-        //   if (xaxis == "Class") {
-        //     svg.select('#axisxtop').transition().call(xTop);
-        //   }
-        //   else{
-        //     svg.select('#axisxbottom').transition().call(xBottom);
-        //   }
-        //   if (yaxis == "Magnitude") {
-        //     svg.select('#axisyleft').transition().call(yLeft);
-        //   }
-        //   else{
-        //     svg.select('#axisyright').transition().call(yRight);
-        //   }
-        //   // svg.select('#axisxbottom').transition().call(xBottom);
-        //   // svg.select('#axisyleft').transition().call(yLeft);
-        //   dots.selectAll('circle')
-        //     .transition()
-        //     .duration(2000)
-        //     .attr("cx", function (d) {
-        //       if (xaxis == "Class") return xTop(d["Class"]);
-        //       else return xBottom(+d["Temperature"]);
-        //     })
-        //     .attr("cy", function (d) {
-        //       if (yaxis == "Magnitude") return yLeft(+d["Magnitude"]);
-        //       else return yRight(+d["Luminosity"]);
-        //     });
-        //     // .attr('cx', d => xBottom(+d.Temperature))
-        //     // .attr('cy', d => yLeft(+d.Magnitude));
-        // }
-
-        // function onDblClicked() {
-        //   console.log('zoomout');
-
-        //   // if (xaxis == "Class"){
-        //   //     xTop.domain(d3.extent(data.map((d) => d.Class)));
-        //   //     svg.select('#axisxtop').transition().call(xTop);
-        //   //   }
-        //   //   else {
-        //   //     xBottom.domain(d3.extent(data.map((d) => +d.Temperature)));
-        //   //     svg.select('#axisxbottom').transition().call(xBottom);
-        //   //   }
-        //   //   if (yaxis == "Magnitude") {
-        //   //       yLeft.domain(d3.extent(data.map((d) => +d.Magnitude)));
-        //   //       svg.select('#axisyleft').transition().call(yLeft);
-        //   //   }
-        //   //   else {
-        //   //     yRight.domain(d3.extent(data.map((d) => +d.Luminosity)));
-        //   //     svg.select('#axisyright').transition().call(yRight);
-        //   //     }
-
-        //   xBottom.domain(d3.extent(data.map((d) => +d.Temperature)));
-        //   yLeft.domain(d3.extent(data.map((d) => +d.Magnitude)));
-        //   svg.select('#axisxbottom').transition().call(xBottom);
-        //   svg.select('#axisyleft').transition().call(yLeft);
-        //   // avoid circular definition
-        //   d3.select('#scatterplot')
-        //     .selectAll('circle')
-        //     .transition()
-        //     // .attr('cx', d => xBottom(+d.Temperature))
-        //     // .attr('cy', d => yLeft(+d.Magnitude));
-        //     .attr("cx", function (d) {
-        //       if (xaxis == "Class") d => xTop(d.Class);
-        //       else d => xBottom(+d.Temperature);
-        //     })
-        //     .attr("cy", function (d) {
-        //       if (yaxis == "Magnitude") d => yLeft(+d.Magnitude);
-        //       else d => yRight(+d.Luminosity);
-        //     });
-        // }
-
-        // function idled() {
-        //     idleTimeout = null;
-        //     console.log('idled');
-        // }
-
-        // function zoom() {
-
-        //     console.log('zoom');
-
-        //     // var t = bee.transition().duration(750);
-        //     console.log(svg.select(".axisxbottom").transition(getTransition()).call(xBottom));
-        //     svg.select(".axisyleft").transition(getTransition()).call(yLeft);
-        //     bee.selectAll("circle").transition(getTransition())
-        //     .attr("cx", function (d) { return xBottom(d.x); })
-        //     .attr("cy", function (d) { return yLeft(d.y); });
-        // }
-
-        // function onDblClicked() {
-        //   console.log('reset');
-        // }
-            
-        }
-
-        
-
-        
 
         function update_radius() {
           flag = !flag;
@@ -589,16 +417,8 @@ export default {
             .data(data)
             .join("circle")
             .attr("fill", function (d) {
-              // if (color_scheme == "Temperature")
-              // return color(d.Temperature);
-              // else if (color_scheme == "Magnitude")
-              // return color(d.Magnitude);
-              // else if (color_scheme == "Luminosity")
-              // return color(d.Luminosity);
-              if (color_scheme == "Class")
-              return color_class(d.Class);
-              else
-              return color_type(d.Type);
+              if (color_scheme == "Class") return color_class(d.Class);
+              else return color_type(d.Type);
             })
             .attr("class", "circle")
             .attr("stroke", "black")
@@ -821,7 +641,7 @@ input:checked + .slider:before {
 
 /* Fixed sidenav, full height */
 .sidenav {
-  height: 800px;
+  height: 100%;
   width: 180px;
   position: absolute;
   z-index: 1;
@@ -865,11 +685,9 @@ input:checked + .slider:before {
   outline: none;
 }
 
-
 .dropdown-btn-radius:hover {
   color: #f1f1f1;
 }
-
 
 /* Add an active class to the active dropdown button */
 /* .active {
@@ -878,40 +696,34 @@ input:checked + .slider:before {
 } */
 
 /* Dropdown container (hidden by default). Optional: add a lighter background color and some left padding to change the design of the dropdown content */
-.xmetric{
+.xmetric {
   display: none;
-  background-color: #5A5A5A;
+  background-color: #5a5a5a;
   border: none;
   padding-left: 8px;
 }
 
-.ymetric{
+.ymetric {
   display: none;
-  background-color: #5A5A5A;
+  background-color: #5a5a5a;
   border: none;
   padding-left: 8px;
 }
 
-.color-scheme{
+.color-scheme {
   display: none;
-  background-color: #5A5A5A;
+  background-color: black;
   border: none;
   padding-left: 8px;
 }
-
-/* Optional: Style the caret down icon
-.fa-caret-down {
-  float: right;
-  padding-right: 8px;
-  color: white;
-} */
 
 /* Some media queries for responsiveness */
 @media screen and (max-height: 450px) {
-  .sidenav {padding-top: 15px;}
-  .sidenav a {font-size: 18px;}
+  .sidenav {
+    padding-top: 15px;
+  }
+  .sidenav a {
+    font-size: 18px;
+  }
 }
-
-
-
 </style>
