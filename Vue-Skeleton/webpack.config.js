@@ -111,7 +111,7 @@ module.exports = {
     },
     resolve: {
         modules: [path.resolve(__dirname, '../src'), 'node_modules'],
-        extensions: ['.js', '.jsx', '.json', '.ts'],
+        extensions: ['.js', '.jsx', '.json', '.ts', '.vue'],
         alias: {
             '@': path.resolve(__dirname, '../src'),
             process: "process/browser"

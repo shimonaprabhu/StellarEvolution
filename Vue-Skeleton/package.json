@@ -23,9 +23,11 @@
     "ant-design-vue": "^2.2.8",
     "core-js": "^3.18.1",
     "d3": "^6.6.2",
+    "d3-celestial": "^0.6.11",
     "pinia": "^2.0.13",
     "stats.js": "^0.17.0",
     "util": "^0.12.4",
+    "versor": "^0.0.3",
     "vue": "^3.2.31",
     "vue-router": "^4.1.1"
   },
@@ -63,6 +65,9 @@
     "webpack": "^5.56.0",
     "webpack-cli": "^4.6.0",
     "webpack-dev-server": "^4.8.1"
+  },
+  "browser": {
+    "d3-celestial": false
   },
   "browserslist": [
     "> 1%",
