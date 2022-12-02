@@ -333,6 +333,6 @@ export default {
 
 <style>
 body {
-  background: #113;
+  background: rgb(0, 7, 29);
 }
 </style>

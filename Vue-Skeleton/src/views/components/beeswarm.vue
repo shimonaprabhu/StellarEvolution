@@ -1,63 +1,67 @@
 <template>
   <!-- <button type="button" class="metric">Add Metric</button> -->
   <div class="sidenav">
-    <button class="dropdown-btn">X-Axis</button>
+    <div class="title">Control Panel</div>
+    <div class="starinfo">Star Information</div>
+    <br />
+    <div class="panel">
+      <!-- <button class="reset">Reset</button> -->
+      <button class="dropdown-btn">X-Axis</button>
+      <select class="xmetric">
+        <option value="Class" selected>Class</option>
+        <option value="Temperature">Temperature</option>
+      </select>
 
-    <select class="xmetric">
-      <option value="Class" selected>Class</option>
-      <option value="Temperature">Temperature</option>
-    </select>
+      <button class="dropdown-btn">Y-Axis</button>
 
-    <button class="dropdown-btn">Y-Axis</button>
+      <select class="ymetric">
+        <option value="Magnitude" selected>Magnitude</option>
+        <option value="Luminosity">Luminosity</option>
+      </select>
 
-    <select class="ymetric">
-      <option value="Magnitude" selected>Magnitude</option>
-      <option value="Luminosity">Luminosity</option>
-    </select>
+      <button class="dropdown-btn">Color Scheme</button>
 
-    <button class="dropdown-btn">Color Scheme</button>
-
-    <select class="color-scheme">
-      <!-- <option value="Magnitude" selected>Magnitude</option>
+      <select class="color-scheme">
+        <!-- <option value="Magnitude" selected>Magnitude</option>
         <option value="Luminosity">Luminosity</option> -->
-      <option value="Type">Type</option>
-      <option value="Class" selected>Class</option>
-    </select>
+        <option value="Type">Type</option>
+        <option value="Class" selected>Class</option>
+      </select>
 
-    <button class="dropdown-btn-radius">
-      Radius
+      <button class="dropdown-btn-radius">
+        Radius
 
-      <label style="display: inline-block" class="switch">
-        <input type="checkbox" />
-        <span class="slider round"></span>
-      </label>
-    </button>
-    <div id="color-class" style="display: none">
-      <button class="dropdown-btn">Legend For Class</button>
+        <label style="display: inline-block" class="switch">
+          <input type="checkbox" />
+          <span class="slider round"></span>
+        </label>
+      </button>
+      <div id="color-class" style="display: none">
+        <button class="dropdown-btn">Legend For Class</button>
 
-      <ul>
-        <li style="color: rgb(94, 99, 247)">O</li>
-        <li style="color: rgb(26, 166, 236)">B</li>
-        <li style="color: rgb(144, 225, 239)">A</li>
-        <li style="color: rgb(255, 255, 255)">F</li>
-        <li style="color: rgb(245, 223, 56)">G</li>
-        <li style="color: rgb(247, 133, 2)">K</li>
-        <li style="color: rgb(247, 26, 2)">M</li>
-      </ul>
-    </div>
-    <div id="color-type" style="display: none">
-      <button class="dropdown-btn">Legend For Type</button>
-      <ul>
-        <li style="color: rgb(213, 94, 0)">Red Dwarf</li>
-        <li style="color: rgb(230, 159, 0)">Brown Dwarf</li>
-        <li style="color: rgb(255, 255, 255)">White Dwarf</li>
-        <li style="color: rgb(204, 121, 167)">Main Sequence</li>
-        <li style="color: rgb(0, 158, 115)">Giant</li>
-        <li style="color: rgb(0, 114, 178)">Supergiant</li>
-      </ul>
+        <ul>
+          <li style="color: rgb(94, 99, 247)">O</li>
+          <li style="color: rgb(26, 166, 236)">B</li>
+          <li style="color: rgb(144, 225, 239)">A</li>
+          <li style="color: rgb(255, 255, 255)">F</li>
+          <li style="color: rgb(245, 223, 56)">G</li>
+          <li style="color: rgb(247, 133, 2)">K</li>
+          <li style="color: rgb(247, 26, 2)">M</li>
+        </ul>
+      </div>
+      <div id="color-type" style="display: none">
+        <button class="dropdown-btn">Legend For Type</button>
+        <ul>
+          <li style="color: rgb(213, 94, 0)">Red Dwarf</li>
+          <li style="color: rgb(230, 159, 0)">Brown Dwarf</li>
+          <li style="color: rgb(255, 255, 255)">White Dwarf</li>
+          <li style="color: rgb(204, 121, 167)">Main Sequence</li>
+          <li style="color: rgb(0, 158, 115)">Giant</li>
+          <li style="color: rgb(0, 114, 178)">Supergiant</li>
+        </ul>
+      </div>
     </div>
   </div>
-
   <!-- 
 <div class="bee-dd">
     <div class="bee-xaxis">
@@ -91,6 +95,10 @@
       <span class="slider round"></span>
     </label>
   </div> -->
+
+  <div class="reset-btn">
+    <button class="reset">Reset</button>
+  </div>
 
   <div id="bee"></div>
 </template>
@@ -187,7 +195,8 @@ export default {
 
         const xBottom = d3
           .scaleLinear()
-          .domain(d3.extent(data.map((d) => +d.Temperature)))
+          // .domain(d3.extent(data.map((d) => +d.Temperature)))
+          .domain([0, 42000])
           .range([width, 0]);
 
         svg
@@ -208,13 +217,14 @@ export default {
 
         const yRight = d3
           .scaleLog()
-          .domain(d3.extent(data.map((d) => +d.Luminosity)))
+          // .domain(d3.extent(data.map((d) => +d.Luminosity)))
+          .domain([0.00002, 8888888])
           .range([height, 0]);
         svg.append("g").attr("class", "axisyright").call(d3.axisRight(yRight));
         svg
           .append("text")
           .attr("transform", "rotate(-90)")
-          .attr("y", 1020)
+          .attr("y", -50)
           .attr("x", 0 - height / 2)
           .attr("dy", "1em")
           .style("text-anchor", "middle")
@@ -224,7 +234,8 @@ export default {
 
         const yLeft = d3
           .scaleLinear()
-          .domain(d3.extent(data.map((d) => +d.Magnitude)))
+          // .domain(d3.extent(data.map((d) => +d.Magnitude)))
+          .domain([-14, 21])
           .range([0, height]);
 
         svg
@@ -232,10 +243,11 @@ export default {
           .attr("transform", "translate(" + width + " ,0)")
           .attr("id", "axisyleft")
           .call(d3.axisLeft(yLeft));
+
         svg
           .append("text")
           .attr("transform", "rotate(-90)")
-          .attr("y", -50)
+          .attr("y", 1020)
           .attr("x", 0 - height / 2)
           .attr("dy", "1em")
           .style("text-anchor", "middle")
@@ -261,13 +273,6 @@ export default {
           .scaleOrdinal()
           .domain(["O", "B", "A", "F", "G", "K", "M"])
           .range([
-            // "#33A1B8",
-            //   "#F3F5E7",
-            //   "#FCFB8F",
-            //   "#FBE426",
-            //   "#FA7806",
-            //   "#FD150B",
-            //   "#FD150B"
             "rgb(94, 99, 247)",
             "rgb(26, 166, 236)",
             "rgb(144, 225, 239)",
@@ -277,59 +282,49 @@ export default {
             "rgb(247, 26, 2)",
           ]);
 
-        const glow_tooltip = d3
-        .select(id)
-        .append("div")
-        .style("opacity", 1)
-        .attr("class", "tooltip")
-        .style("color", "rgb(220,208,255)")
-        .style("font-size", "20px")
-        .style("background-color", "#113")
-        .style("padding", "5px")
-        .style("position", "absolute")
-        .style("cursor", "pointer")
-        .style("font-style", "italic");
-
         const starMass = d3.extent(data.map((d) => +d["Radius"]));
         const size = d3.scaleSqrt().domain(starMass).range([3, 30]);
+
+        const glow_tooltip = d3
+          .select(id)
+          .append("div")
+          .style("color", "white")
+          .style("opacity", 0)
+          .attr("class", "tooltip")
+          .style("width", "180px")
+          .style("font-size", "16px")
+          .style("position", "absolute")
+          .style("left", 18 + "px")
+          .style("top", 100 + "px");
 
         d3.select(".xmetric").on("change", update);
         d3.select(".ymetric").on("change", update);
         d3.select(".color-scheme").on("change", update);
         d3.select(".slider").on("click", update_radius);
+        // d3.select(".reset").on("click", update);
         update();
         function update() {
-          // svg.selectAll(".circle").remove();
+          // svg.selectAll(".color-scheme").remove();
           xaxis = d3.select(".xmetric").property("value");
           yaxis = d3.select(".ymetric").property("value");
           color_scheme = d3.select(".color-scheme").property("value");
 
-          const tooltip = d3
-            .select(id)
-            .append("div")
-            .style("opacity", 0)
-            .attr("class", "tooltip")
-            .style("background-color", "white")
-            .style("border", "solid")
-            .style("border-width", "1px")
-            .style("border-radius", "5px")
-            .style("padding", "5px")
-            .style("position", "absolute");
+          var filter = svg.append("defs").append("filter").attr("id", "glow"),
+            feGaussianBlur = filter
+              .append("feGaussianBlur")
+              .attr("stdDeviation", "5")
+              .attr("result", "coloredBlur"),
+            feMerge = filter.append("feMerge"),
+            feMergeNode_1 = feMerge
+              .append("feMergeNode")
+              .attr("in", "coloredBlur"),
+            feMergeNode_2 = feMerge
+              .append("feMergeNode")
+              .attr("in", "SourceGraphic");
 
-          // Tooltip
-          const mouseover = function (event, d) {
-            tooltip.style("opacity", 1);
-          };
-
-          const mousemove = function (event, d) {
-            tooltip
-              .html(`R: ${color_type(d.Type)}`)
-              .style("left", event.x + "px")
-              .style("top", event.y + "px");
-          };
-          const mouseleave = function (event, d) {
-            tooltip.transition().duration(200).style("opacity", 0);
-          };
+          function dragged(event, d) {
+            d3.select(this).attr("cx", event.x).attr("cy", event.y);
+          }
 
           const dots = svg
             .selectAll(".circle")
@@ -352,21 +347,18 @@ export default {
               if (flag) return size(+d["Radius"]);
               else return 2;
             })
-            // .style("filter","url(#glow)")
             .style("filter", function (d) {
-              if ((d["Glow"])!="N")
-              return "url(#glow)";
+              if (d["Glow"] != "N") return "url(#glow)";
             })
             .on("click", function (event, d) {
-            if ((d["Glow"])!="N") {
-              console.log("Glow");
-              glow_tooltip.html(`Name`)
-                
-            } 
-          })
-            .on("mouseover", mouseover)
-            .on("mousemove", mousemove)
-            .on("mouseleave", mouseleave)
+              if (d["Glow"] != "N") {
+                glow_tooltip.style("opacity", 1);
+                glow_tooltip.html(
+                  `Name: ${d.Glow} <br/> Temperature: ${d.Temperature}K <br/> Radius: ${d.Radius}x`
+                );
+              } else glow_tooltip.style("opacity", 0);
+            })
+            .call(d3.drag().on("drag", dragged))
             .transition()
             .duration(2000)
             .attr("cx", function (d) {
@@ -378,76 +370,11 @@ export default {
               else return yRight(+d["Luminosity"]);
             });
 
-          var filter = svg.append("defs").append("filter").attr("id", "glow"),
-          feGaussianBlur = filter
-            .append("feGaussianBlur")
-            .attr("stdDeviation", "5")
-            .attr("result", "coloredBlur"),
-          feMerge = filter.append("feMerge"),
-          feMergeNode_1 = feMerge
-            .append("feMergeNode")
-            .attr("in", "coloredBlur"),
-          feMergeNode_2 = feMerge
-            .append("feMergeNode")
-            .attr("in", "SourceGraphic");
-
-
-          // const brush = d3.brush().on("start brush end", brushed);
-
-          // svg.call(brush);
-
-          
-          // function brushed(event) {
-          //   console.log("brushed");
-          //   let value = [];
-          //   if (event.selection) {
-          //     const [[x0, y0], [x1, y1]] = event.selection;
-
-          //     value = dots
-          //       .style("fill", "white")
-          //       .filter(function (d) {
-          //         if (xaxis == "Temperature" && yaxis == "Magnitude") {
-          //           x0 <= xBottom(d.Temperature) &&
-          //             xBottom(d.Temperature) < x1 &&
-          //             y0 <= yLeft(d.Magnitude) &&
-          //             yLeft(d.Magnitude) < y1;
-          //         }
-          //         // console.log(x0, y0, x1, y1);
-          //         // console.log(
-          //         //   "X",
-          //         //   xBottom(d.Temperature) && xBottom(d.Temperature),
-          //         //   "Y",
-          //         //   yLeft(d.Magnitude) && yLeft(d.Magnitude)
-          //         // );
-          //       })
-          //       .style("fill", "grey")
-          //       .data();
-          //     //   .filter(function (d) {
-          //     //   // if (xaxis == "Class" && yaxis == "Magnitude") {
-          //     //   //   return (d => x0 <= xTop(d.Class) && xTop(d.Class) < x1 && y0 <= yLeft(d.Magnitude) && yLeft(d.Magnitude) < y1);
-
-          //     //   // }
-          //     //   // else if (xaxis == "Class" && yaxis == "Luminosity"){
-          //     //   //   console.log('2');
-          //     //   //   return (d => x0 <= xTop(d.Class) && xTop(d.Class) < x1 && y0 <= yRight(d.Luminosity) && yRight(d.Luminosity) < y1);
-
-          //     //   // }
-          //     //    if (xaxis == "Temperature" && yaxis == "Magnitude"){
-          //     //     console.log(xBottom(d.Temperature))
-          //     //     return (d => x0 <= xBottom(d.Temperature) && xBottom(d.Temperature) < x1 && y0 <= yLeft(d.Magnitude) && yLeft(d.Magnitude) < y1);
-
-          //     //   }
-          //     //   // else if (xaxis == "Temperature" && yaxis == "Luminosity"){
-          //     //   //   console.log('4');
-          //     //   //   return (d => x0 <= xBottom(d.Temperature) && xBottom(d.Temperature) < x1 && y0 <= yRight(d.Luminosity) && yRight(d.Luminosity) < y1);
-
-          //     //   // }
-          //     // })
-          //   } else {
-          //     dots.style("fill", "white");
-          //   }
-          //   svg.property("value", value).dispatch("input");
-          // }
+          //   svg
+          //     .selectAll(".circle")
+          //     .data(data)
+          //     .join("circle")
+          //     .call(d3.drag().on("drag", dragged));
         }
 
         function update_radius() {
@@ -478,7 +405,7 @@ export default {
 
 <style>
 #bee {
-  background-color: #113;
+  background-color: rgb(0, 7, 29);
 }
 
 .toggle {
@@ -542,7 +469,7 @@ export default {
   color: white;
 }
 .xmetric {
-  background: #113;
+  background: rgb(0, 7, 29);
   /* border-color: #d9d9d9;
   border-radius: 2px; */
   font-size: 14px;
@@ -569,7 +496,7 @@ export default {
 }
 
 .ymetric {
-  background: #113;
+  background: rgb(0, 7, 29);
   /* border-color: #d9d9d9;
   border-radius: 2px; */
   font-size: 14px;
@@ -596,7 +523,7 @@ export default {
 }
 
 .color-scheme {
-  background: #113;
+  background: rgb(0, 7, 29);
   /* border-color: #d9d9d9;
   border-radius: 2px; */
   font-size: 14px;
@@ -667,17 +594,22 @@ input:focus + .slider {
 }
 
 input:checked + .slider:before {
-  -webkit-transform: translateX(26px);
-  -ms-transform: translateX(26px);
-  transform: translateX(26px);
+  -webkit-transform: translateX(15px);
+  -ms-transform: translateX(15px);
+  transform: translateX(15px);
 }
 
 .slider.round {
-  border-radius: 36px;
+  border-radius: 24px;
+  height: 1.5em;
+  width: 2.5em;
 }
 
 .slider.round:before {
   border-radius: 50%;
+  padding-top: 10px;
+  height: 1em;
+  width: 1em;
 }
 
 /* Fixed sidenav, full height */
@@ -688,17 +620,36 @@ input:checked + .slider:before {
   z-index: 1;
   top: 0;
   left: 0;
-  background-color: #111;
+  background-color: rgb(0, 7, 29);
+  border-right: 1px solid white;
   overflow-x: hidden;
   padding-top: 20px;
+}
+
+.title {
+  text-align: center;
+  color: white;
+  font-size: 18px;
+  border-bottom: 0.1px solid white;
+  border-top: 0.1px solid white;
+}
+
+.starinfo {
+  padding-top: 7px;
+  text-align: center;
+  color: white;
+}
+
+.panel {
+  padding-top: 180px;
 }
 
 /* Style the sidenav links and the dropdown button */
 .dropdown-btn {
   padding: 6px 8px 6px 16px;
   text-decoration: none;
-  font-size: 20px;
-  color: #818181;
+  font-size: 16px;
+  color: white;
   display: block;
   border: none;
   background: none;
@@ -710,14 +661,14 @@ input:checked + .slider:before {
 
 /* On mouse-over */
 .dropdown-btn:hover {
-  color: #f1f1f1;
+  color: #818181;
 }
 
 .dropdown-btn-radius {
-  padding: 6px 8px 6px 16px;
+  padding: 6px 8px 0px 16px;
   text-decoration: none;
-  font-size: 20px;
-  color: #818181;
+  font-size: 16px;
+  color: white;
   border: none;
   background: none;
   width: 100%;
@@ -727,7 +678,7 @@ input:checked + .slider:before {
 }
 
 .dropdown-btn-radius:hover {
-  color: #f1f1f1;
+  color: #818181;
 }
 
 /* Add an active class to the active dropdown button */
@@ -756,6 +707,10 @@ input:checked + .slider:before {
   background-color: #5a5a5a;
   border: none;
   padding-left: 8px;
+}
+
+.tooltip {
+  z-index: 1;
 }
 
 /* Some media queries for responsiveness */

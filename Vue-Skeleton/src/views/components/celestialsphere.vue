@@ -171,9 +171,9 @@ export default {
         .append("div")
         .style("opacity", 0)
         .attr("class", "tooltip")
-        .style("color", "rgb(153, 247, 247)")
-        .style("font-size", "20px")
-        .style("background-color", "#113")
+        .style("color", "white")
+        .style("font-size", "16px")
+        .style("background-color", "rgb(0, 7, 29)")
         .style("padding", "5px")
         .style("position", "absolute")
         .style("cursor", "pointer")
@@ -184,9 +184,9 @@ export default {
         .append("div")
         .style("opacity", 0)
         .attr("class", "tooltip")
-        .style("color", "rgb(220,208,255)")
-        .style("font-size", "20px")
-        .style("background-color", "#113")
+        .style("color", "white")
+        .style("font-size", "16px")
+        .style("background-color", "rgb(0, 7, 29)")
         .style("padding", "5px")
         .style("position", "absolute")
         .style("cursor", "pointer")
@@ -195,11 +195,11 @@ export default {
       const starFuture = d3
         .select(id)
         .append("div")
-        .style("color", "gray")
+        .style("color", "white")
         .style("opacity", 0)
         .attr("class", "tooltip")
-        .style("font-size", "20px")
-        .style("background-color", "rgb(0, 0, 0)")
+        .style("font-size", "16px")
+        .style("background-color", "rgb(0, 7, 29)")
         .style("padding", "10px")
         .style("padding-top", "120px")
         .style("height", "100%")
@@ -212,9 +212,9 @@ export default {
         .select(id)
         .append("div")
         .attr("class", "sidenav")
-        .style("color", "gray")
-        .style("font-size", "20px")
-        .style("background-color", "rgb(0, 0, 0)")
+        .style("color", "white")
+        .style("font-size", "16px")
+        .style("background-color", "rgb(0, 7, 29)")
         .style("padding", "10px")
         .style("height", "100%")
         .style("width", "180px")
@@ -266,7 +266,7 @@ export default {
         .enter()
         .append("path")
         .attr("d", constellationLinesPath)
-        .attr("fill", "#113")
+        .attr("fill", "rgb(0, 7, 29)")
         .attr("stroke", "#ddd")
         .attr("stroke-width", "0.5px")
         .attr("transform", `translate(100,50)`)
@@ -378,7 +378,7 @@ export default {
   z-index: 1;
   top: 0;
   left: 0; */
-  background-color: #111;
+  background-color: rgb(0, 7, 29);
   /* overflow-x: hidden;
   padding-top: 20px; */
 }

@@ -3,7 +3,7 @@
         <!-- <Navigation /> -->
         <a-layout>
             <a-layout style="padding: 0">
-                <a-layout-content :style="{ background: '#113', padding: '24px', margin: 0, minHeight: '280px' }">
+                <a-layout-content :style="{ background: 'rgb(0, 7, 29)', padding: '24px', margin: 0, minHeight: '280px' }">
                     <router-view></router-view>
                 </a-layout-content>
             </a-layout>
