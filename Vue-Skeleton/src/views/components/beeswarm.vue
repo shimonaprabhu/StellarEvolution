@@ -638,10 +638,8 @@ export default {
   line-height: 1.5715;
   position: relative;
   display: inline-block;
+  font-style: italic;
   font-family: "Open Sans", sans-serif;
-  
-  padding: 1px 1px;
-  padding: 6px 8px 6px 16px;
   color: white;
   background-color: rgb(0, 7, 29);
   display: none;
@@ -673,6 +671,7 @@ export default {
   line-height: 1.5715;
   position: relative;
   display: inline-block;
+  font-style: italic;
   font-family: "Open Sans", sans-serif;
 
   padding: 1px 1px;
@@ -707,6 +706,7 @@ export default {
   line-height: 1.5715;
   position: relative;
   display: inline-block;
+  font-style: italic;
   font-family: "Open Sans", sans-serif;
 
   padding: 1px 1px;
@@ -897,7 +897,7 @@ input:checked + .slider2:before {
 }
 
 .starinfo {
-  padding-top: 7px;
+  padding-top: 2px;
   padding-left: 10px;
   text-align: center;
   color: white;
