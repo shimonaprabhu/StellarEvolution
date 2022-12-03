@@ -379,6 +379,7 @@ export default {
   font-size: 36px;
   color: white;
   padding-left: 270px;
+  text-shadow: 0px 0px 30px white;
 }
 
 .sidenav-sky {

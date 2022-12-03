@@ -621,6 +621,7 @@ export default {
   font-size: 36px;
   color: white;
   padding-left: 150px;
+  text-shadow: 0px 0px 30px white;
 }
 
 .xmetric {
@@ -646,7 +647,7 @@ export default {
   display: none;
   border: none;
   padding-left: 10px;
-  text-align: left;
+  text-align: center;
 }
 .xmetric:hover {
   border-color: #1890ff;

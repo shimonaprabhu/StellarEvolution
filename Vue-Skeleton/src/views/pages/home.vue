@@ -70,8 +70,5 @@ export default {
 };
 </script>
 
-// <style>
-// .head {
-//   z-index: 100;
-// }
-// </style>
+<style>
+ </style>
