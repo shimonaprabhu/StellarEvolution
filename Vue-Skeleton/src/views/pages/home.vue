@@ -1,7 +1,4 @@
 <template>
-<!-- <div class="head">
-  <h1> Stellar Evolution </h1>
-</div> -->
   <div>
     <BeeChart v-if="dataExists" :myBeechartData="myBeeData" />
     <!-- <NightSky v-if="dataExists" :myNightskyData="myNightskyData" />  -->
@@ -72,3 +69,9 @@ export default {
   },
 };
 </script>
+
+// <style>
+// .head {
+//   z-index: 100;
+// }
+// </style>

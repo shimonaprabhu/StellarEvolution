@@ -1,5 +1,5 @@
 <template>
-
+<div class="heading-sphere"> Celestial Sphere </div>
   <div id="sphere"></div>
 </template>
 
@@ -26,9 +26,9 @@ export default {
   },
   methods: {
     drawSphereChart(localData, id) {
-      const margin = { top: 80, right: 100, bottom: 120, left: 250 };
+      const margin = { top: 40, right: 100, bottom: 120, left: 250 };
       const height = "600px";
-      const width = "1000px";
+      const width = "1100px";
       const padding = 10;
       const sensitivity = 75;
       const starlist = [
@@ -134,8 +134,8 @@ export default {
         },
         Polaris: {
           age: "70 Million",
-          current: "White Dwarf",
-          future: "Red Giant -> Planetary Nebula -> White Dwarf",
+          current: "Supergiant",
+          future: "Supernova -> Neutron Star/Black Hole",
         },
         "Proxima Centauri": {
           age: "4.85 Billion",
@@ -171,7 +171,7 @@ export default {
         .append("div")
         .style("opacity", 0)
         .attr("class", "tooltip")
-        .style("color", "white")
+        .style("color", "rgb(220,208,255)")
         .style("font-size", "16px")
         .style("background-color", "rgb(0, 7, 29)")
         .style("padding", "5px")
@@ -184,7 +184,7 @@ export default {
         .append("div")
         .style("opacity", 0)
         .attr("class", "tooltip")
-        .style("color", "white")
+        .style("color", "rgb(136,205,236)")
         .style("font-size", "16px")
         .style("background-color", "rgb(0, 7, 29)")
         .style("padding", "5px")
@@ -206,7 +206,8 @@ export default {
         .style("width", "180px")
         .style("position", "absolute")
         .style("left", 0 + "px")
-        .style("top", 800 + "px");
+        .style("top", 800 + "px")
+        .style("border-right","1px solid white");
       
       const sidenav = d3
         .select(id)
@@ -235,8 +236,8 @@ export default {
         if (starNames[d.id].name) {
           tooltip_stars
             .html(`${starNames[d.id].name}`)
-            .style("left", 810 + "px")
-            .style("top", 1190 + "px");
+            .style("left", 820 + "px")
+            .style("top", 1250 + "px");
         }
       };
       const mousemove_constellation = function (event, d) {
@@ -246,8 +247,8 @@ export default {
               .html(
                 `${constellations.features[i].properties.name}`
               )
-              .style("left", 810 + "px")
-              .style("top", 1190 + "px");
+              .style("left", 820 + "px")
+              .style("top", 1250 + "px");
           }
         }
       };
@@ -285,6 +286,7 @@ export default {
       //   .attr("font_family", "sans-serif") // Font type
       //   .attr("font-size", "11px") // Font size
       // .attr("fill", "darkgreen");
+
       svg
         .append("g")
         .attr("id", "star")
@@ -295,22 +297,22 @@ export default {
         .attr("d", starPath)
         .attr("fill", function (d) {
           if (d.id == 32349) return "rgb(204,121,167)";
-          if (d.id == 27989) return "rgb(0,114,178)";
-          if (d.id == 24436) return "rgb(0,114,178)";
+          if (d.id == 27989) return "#00BFFF";
+          if (d.id == 24436) return "#00BFFF";
           if (d.id == 30438) return "rgb(204,121,167)";
-          if (d.id == 69673) return "rgb(0,158,115)";
-          if (d.id == 80763) return "rgb(0,114,178)";
-          if (d.id == 24608) return "rgb(0,158,115)";
-          if (d.id == 102098) return "rgb(0,114,178)";
-          if (d.id == 21421) return "rgb(0,158,115)";
+          if (d.id == 69673) return "#00CC66";
+          if (d.id == 80763) return "#00BFFF";
+          if (d.id == 24608) return "#00CC66";
+          if (d.id == 102098) return "#00BFFF";
+          if (d.id == 21421) return "#00CC66";
           if (d.id == 97649) return "rgb(204,121,167)";
-          if (d.id == 37826) return "rgb(0,158,115)";
+          if (d.id == 37826) return "#00CC66";
           if (d.id == 36850) return "rgb(204,121,167)";
           if (d.id == 25336) return "rgb(204,121,167";
           if (d.id == 37279) return "rgb(204,121,167)";
-          if (d.id == 91262) return "rgb(255,255,255)";
-          if (d.id == 11767) return "rgb(255,255,255)";
-          if (d.id == 68191) return "rgb(213,94,0)";
+          if (d.id == 91262) return "rgb(204,121,167)";
+          if (d.id == 11767) return "#00BFFF";
+          if (d.id == 68191) return "#FC6A0C";
           else return "#fff";
         })
         .on("mouseover", mouseover_stars)
@@ -371,15 +373,17 @@ export default {
 </script>
 
 <style>
+
+.heading-sphere {
+  text-align: center;
+  font-size: 36px;
+  color: white;
+  padding-left: 270px;
+}
+
 .sidenav-sky {
   height: 100%;
   width: 180px;
-  /* position: absolute;
-  z-index: 1;
-  top: 0;
-  left: 0; */
   background-color: rgb(0, 7, 29);
-  /* overflow-x: hidden;
-  padding-top: 20px; */
 }
 </style>
