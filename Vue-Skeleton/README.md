@@ -22,8 +22,13 @@ D3.js that has been included.
 
 # Files that have been used
 The files under `src/` consist of the source code.
+
 The root script file for VUE is `index.ts` which is the initial typescript/javascript file that instatinates our single page application.
+
 The root file for all **development** is within `App.vue`
+
 The data files are contained under **assets/data** Directory.
+
 Within the pages directory we have one page  **Pages/Home.vue**.
+
 For components we have two views - beeswarm.vue and cellestialsphere.vue in the **Views** Directory under **Components**.
